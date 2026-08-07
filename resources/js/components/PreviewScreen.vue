@@ -132,6 +132,7 @@ export default {
         <div class="card overflow-hidden">
             <div class="card-header d-flex align-items-center justify-content-between">
                 <h2 class="h6 m-0">{{ this.title }}</h2>
+                <slot v-if="ready && entry" name="actions" :entry="entry" :batch="batch"></slot>
             </div>
 
             <div

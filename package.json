@@ -4,6 +4,7 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
+        "test": "node --test tests/JavaScript/*.test.js",
         "watch": "vite build --watch"
     },
     "devDependencies": {

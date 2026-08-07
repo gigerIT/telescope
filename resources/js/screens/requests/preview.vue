@@ -1,7 +1,13 @@
 <script type="text/ecmascript-6">
+import CopyToClipboard from 'vue-copy-to-clipboard';
 import StylesMixin from './../../mixins/entriesStyles';
+import requestMarkdown from './markdown';
 
 export default {
+    components: {
+        CopyToClipboard,
+    },
+
     mixins: [
         StylesMixin,
     ],
@@ -10,15 +16,34 @@ export default {
         return {
             entry: null,
             batch: [],
+            copied: false,
             currentRequestTab: 'payload',
             currentResponseTab: 'response'
         };
-    }
+    },
+
+    methods: {
+        requestMarkdown,
+
+        handleCopy() {
+            this.copied = true;
+
+            setTimeout(() => this.copied = false, 1000);
+        },
+    },
 }
 </script>
 
 <template>
     <preview-screen title="Request Details" resource="requests" :id="$route.params.id" entry-point="true">
+        <template slot="actions" slot-scope="slotProps">
+            <copy-to-clipboard :text="requestMarkdown(slotProps.entry, slotProps.batch)" @copy="handleCopy">
+                <button type="button" class="btn btn-primary">
+                    {{ copied ? 'Copied!' : 'Copy as Markdown' }}
+                </button>
+            </copy-to-clipboard>
+        </template>
+
         <template slot="table-parameters" slot-scope="slotProps">
             <tr>
                 <td class="table-fit text-muted">Method</td>
